@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.namoo.club.dao.sqlmap.mapper.UserMapper">
+    
+    <resultMap type="SocialPerson" id="result-user">
+    	<id property="email" column="email" javaType="string"/>
+    	<result property="name" column="name" javaType="string"/>
+    	<result property="password" column="passwd" javaType="string"/>
+    </resultMap>
+    
+    <select id="selectAllUsers" resultMap="result-user">
+    	SELECT
+    		name,
+    		email,
+    		passwd
+    	FROM user
+    </select>
+
+    <select id="selectUser" parameterType="string" resultMap="result-user">
+    	SELECT
+    		name,
+    		email,
+    		passwd
+    	FROM user
+    	WHERE email = #{email}
+    </select>
+
+	<insert id="insertUser" parameterType="SocialPerson">
+		INSERT INTO 
+			user ( 
+			email, name, passwd ) 
+		VALUES ( 
+			#{email}, #{name}, #{password} )
+	</insert>
+	
+	<update id="updateUser" parameterType="SocialPerson">
+		UPDATE
+			user
+		SET name = #{name},
+			passwd = #{password}
+		WHERE email = #{email}
+	</update>
+	
+	<delete id="deleteUser" parameterType="String">
+		DELETE
+		FROM user
+		WHERE email = #{email}
+	</delete>
+</mapper>

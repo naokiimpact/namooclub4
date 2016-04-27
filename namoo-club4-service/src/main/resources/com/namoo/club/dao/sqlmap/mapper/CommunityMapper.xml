@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.namoo.club.dao.sqlmap.mapper.CommunityMapper">
+
+    
+    <resultMap type="Community" id="result-community">
+    	<id  property="id"     column="comm_no"     javaType="int" />
+        <result property="name"     column="name"     javaType="string" />
+        <result property="description"     column="description"     javaType="string" />
+        <result property="date"     column="reg_date"     javaType="java.util.Date" />
+        
+
+        <!-- <collection property="categories" javaType="string" column="category" /> -->
+        
+		
+		<!-- <collection property="members" ofType="CommunityMember">
+            <result property="communityNo"   column="comm_no"    javaType="int" />
+            <association property="member" javaType="SocialPerson">
+                <id     property="email"   column="user_id"   javaType="string" />
+            </association>
+        </collection> -->
+    </resultMap>
+    
+    
+    <select id="selectAllCommunities" resultMap="result-community">
+    	<!-- SELECT a.comm_no, a.name, a.description, a.reg_date
+    	FROM community a 
+
+    	INNER JOIN member c 
+    	ON a.COMM_NO = c.GROUP_NO 
+    	WHERE c.LEVEL = 3 -->
+    	SELECT comm_no, name, description, reg_date
+    	FROM community
+    </select>
+    
+    
+    <select id="selectCommunity" parameterType="int" resultMap="result-community">
+    	<!-- SELECT a.comm_no, a.name, a.description, a.reg_date
+    	FROM community a 
+    	
+    	INNER JOIN member c 
+    	ON a.COMM_NO = c.GROUP_NO 
+    	WHERE c.LEVEL = 3 AND a.comm_no = #{communityId} -->
+    	SELECT comm_no, name, description, reg_date
+    	FROM community
+    	WHERE comm_no = #{communityId}
+    </select>
+    
+    <insert id="createCommunity" parameterType="Community" useGeneratedKeys="true" keyProperty="id">
+    	INSERT INTO community ( 
+    		name
+    		, description 
+    	) VALUES ( 
+    		#{name}
+    		, #{description} 
+    	)
+    </insert>
+    
+    <update id="updateCommunity" parameterType="Community">
+    	UPDATE community 
+    	<set>
+            <if test="name != null">name = #{name} ,</if>
+            <if test="description != null">description = #{description}</if>
+        </set>
+    	WHERE comm_no = #{id}
+    </update>
+    
+    
+    <delete id="deleteCommunity" parameterType="int">
+    	DELETE FROM community WHERE comm_no = #{commNo}
+    </delete>
+
+</mapper>

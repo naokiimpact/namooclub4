@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.namoo.club.dao.sqlmap.mapper.ClubMapper">
+    
+    <resultMap type="Category" id="result-category">
+        <id  property="categoryNo"     column="category_no"     javaType="int" />
+        <result property="category"     column="category"     javaType="string" />
+    </resultMap>
+    
+    <resultMap type="Member" id="result-member">
+    	<id  property="email"     column="user_id"     javaType="string" />
+        <result property="groupNo"     column="category"     javaType="int" />
+        <result property="groupType"     column="group_type"     javaType="int" />
+        <result property="level"     column="level"     javaType="int" />
+    </resultMap>
+    
+    
+    <resultMap type="Club" id="result-club">
+    	<id  property="id"     column="club_no"     javaType="int" />
+        <result property="communityId"     column="comm_no"     javaType="int" />
+        <result property="name"     column="name"     javaType="string" />
+        <result property="description"     column="description"     javaType="string" />
+        <result property="category"     column="category"     javaType="string" />
+        <result property="date"     column="reg_date"     javaType="java.util.Date" />
+        
+       <!--  <collection property="managers" ofType="ClubManager">
+            <result property="clubNo"   column="club_no"    javaType="int" />
+            <result property="level"   column="level"    javaType="int" />
+            <association property="manager" javaType="SocialPerson">
+                <id     property="email"   column="user_id"   javaType="string" />
+                <result property="name" column="commenter_name" javaType="string" />
+                <result property="password" column="commenter_name" javaType="string" />
+            </association>
+        </collection>
+        
+        <collection property="members" ofType="ClubMember">
+            <result property="clubNo"   column="comment"    javaType="string" />
+            <association property="member" javaType="SocialPerson">
+                <id     property="email"   column="user_id"   javaType="string" />
+                <result property="name" column="commenter_name" javaType="string" />
+                <result property="password" column="commenter_name" javaType="string" />
+            </association>
+        </collection> -->
+        
+    </resultMap>
+    
+    
+    <select id="selectAllClubByCommunityId" parameterType="int" resultMap="result-club">
+    	SELECT a.comm_no, a.club_no, a.name, a.description, b.group_type, c.category, a.reg_date, b.user_id
+		FROM club a
+		INNER JOIN member b
+		ON a.club_no = b.group_no
+		INNER JOIN category c
+		ON a.category_no = c.category_no
+		WHERE a.comm_no = #{commnityId} AND b.level = 3 AND b.group_type = 2
+    </select>
+    
+    
+    <select id="selectClub" parameterType="int" resultMap="result-club">
+    	SELECT a.comm_no, a.club_no, a.name, a.description, c.category, a.reg_date
+		FROM club a
+		INNER JOIN category c
+		ON a.category_no = c.category_no
+		WHERE a.club_no = #{clubNo}
+    </select>
+    
+    
+    <select id="selectAllClubMembersById" parameterType="int" resultMap="result-member">
+		SELECT user_id, level
+		FROM member
+		WHERE group_no = #{clubId} AND group_type = 2
+    </select>
+    
+    
+    <insert id="createClub" parameterType="map" useGeneratedKeys="true" keyProperty="club.id">
+    	INSERT INTO club (
+    		comm_no
+    		, name
+    		, description
+    		, category_no
+    	) VALUES ( 
+    		#{communityNo}
+    		, #{club.name}
+    		, #{club.description}
+    		, #{categoryNo} 
+    	)
+    </insert>
+    
+    
+    <update id="updateClub" parameterType="Club">
+    	UPDATE club
+    	<set>
+            <if test="name != null">name = #{name} ,</if>
+            <if test="description != null">description = #{description}</if>
+        </set>
+        WHERE club_no = #{id}
+    </update>
+    
+    
+    <delete id="deleteClub" parameterType="int">
+    	DELETE FROM club WHERE club_no = #{clubNo}
+    </delete>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+    </settings>
+    
+    <typeAliases>
+        <typeAlias type="com.namoo.club.domain.Club" alias="Club" />
+        <typeAlias type="com.namoo.club.domain.Community" alias="Community" />
+        <typeAlias type="com.namoo.club.domain.SocialPerson" alias="SocialPerson" />
+        <typeAlias type="com.namoo.club.domain.ClubManager" alias="ClubManager" />
+        <typeAlias type="com.namoo.club.domain.ClubMember" alias="ClubMember" />
+        <typeAlias type="com.namoo.club.domain.CommunityManager" alias="CommunityManager" />
+        <typeAlias type="com.namoo.club.domain.CommunityMember" alias="CommunityMember" />
+        <typeAlias type="com.namoo.club.dto.Category" alias="Category" />
+        <typeAlias type="com.namoo.club.dto.Member" alias="Member" />
+    </typeAliases>
+    
+</configuration>
